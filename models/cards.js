@@ -373,7 +373,7 @@ Cards.helpers({
       archived: false,
     }, {
       sort: {
-        sort: 1,
+        subtaskSort: 1,
       },
     });
   },
@@ -384,7 +384,7 @@ Cards.helpers({
       archived: false,
     }, {
       sort: {
-        sort: 1,
+        subtaskSort: 1,
       },
     });
   },
@@ -1362,14 +1362,14 @@ function cardRemover(userId, doc) {
   Checklists.remove({
     cardId: doc._id,
   });
-  Subtasks.remove({
-    cardId: doc._id,
-  });
   CardComments.remove({
     cardId: doc._id,
   });
   Attachments.remove({
     cardId: doc._id,
+  });
+  Cards.remove({
+    parentId: doc._id,
   });
 }
 

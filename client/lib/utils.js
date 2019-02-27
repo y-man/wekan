@@ -33,7 +33,7 @@ Utils = {
     return $(window).width() <= 800;
   },
 
-  calculateIndexData(prevData, nextData, nItems = 1) {
+  calculateIndexData(prevData, nextData, nItems = 1, sortKey = 'sort') {
     let base, increment;
     // If we drop the card to an empty column
     if (!prevData && !nextData) {
@@ -41,18 +41,18 @@ Utils = {
       increment = 1;
       // If we drop the card in the first position
     } else if (!prevData) {
-      base = nextData.sort - 1;
+      base = nextData[sortKey] - 1;
       increment = -1;
       // If we drop the card in the last position
     } else if (!nextData) {
-      base = prevData.sort + 1;
+      base = prevData[sortKey] + 1;
       increment = 1;
     }
     // In the general case take the average of the previous and next element
     // sort indexes.
     else {
-      const prevSortIndex = prevData.sort;
-      const nextSortIndex = nextData.sort;
+      const prevSortIndex = prevData[sortKey];
+      const nextSortIndex = nextData[sortKey];
       increment = (nextSortIndex - prevSortIndex) / (nItems + 1);
       base = prevSortIndex + increment;
     }

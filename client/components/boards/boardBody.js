@@ -20,6 +20,11 @@ BlazeComponent.extendComponent({
           this.isBoardReady.set(handle.ready());
         });
       });
+      // subscribe to subtasks board
+      const currentBoardData = Boards.findOne(Session.get('currentBoard'));
+      if (currentBoardData && currentBoardData.subtasksDefaultBoardId) {
+        subManager.subscribe('board', currentBoardData.subtasksDefaultBoardId);
+      }
     });
   },
 

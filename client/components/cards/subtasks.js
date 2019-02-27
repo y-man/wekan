@@ -13,10 +13,10 @@ BlazeComponent.extendComponent({
     const cardId = this.currentData().cardId;
     const card = Cards.findOne(cardId);
     const sortIndex = -1;
-    const crtBoard = Boards.findOne(card.boardId);
-    const targetBoard = crtBoard.getDefaultSubtasksBoard();
-    const listId = targetBoard.getDefaultSubtasksListId();
-    const swimlaneId = targetBoard.getDefaultSwimline()._id;
+    const currentBoard = Boards.findOne(card.boardId);
+    const subtaskBoard = currentBoard.getDefaultSubtasksBoard();
+    const listId = subtaskBoard.getDefaultSubtasksListId();
+    const swimlaneId = subtaskBoard.getDefaultSwimline()._id;
 
     if (title) {
       const _id = Cards.insert({
@@ -26,10 +26,11 @@ BlazeComponent.extendComponent({
         labelIds: [],
         customFields: [],
         listId,
-        boardId: targetBoard._id,
+        boardId: subtaskBoard._id,
         sort: sortIndex,
         swimlaneId,
         type: 'cardType-card',
+        subtaskSort: card.subtasksCount(),
       });
 
       // In case the filter is active we need to add the newly inserted card in
