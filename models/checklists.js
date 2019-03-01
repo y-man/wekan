@@ -139,12 +139,9 @@ if (Meteor.isServer) {
   });
 
   Checklists.before.remove((userId, doc) => {
-    const activities = Activities.find({ checklistId: doc._id });
-    if (activities) {
-      activities.forEach((activity) => {
-        Activities.remove(activity._id);
-      });
-    }
+    ChecklistItems.remove({ checklistId: doc._id });
+    Activities.remove({ checklistId: doc._id });
+
     Activities.insert({
       userId,
       activityType: 'removeChecklist',
@@ -153,8 +150,6 @@ if (Meteor.isServer) {
       checklistId: doc._id,
       checklistName:doc.title,
     });
-
-
   });
 }
 

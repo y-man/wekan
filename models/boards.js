@@ -805,6 +805,24 @@ Boards.mutations({
   },
 });
 
+function boardRemover(userId, doc) {
+  CustomFields.remove({
+    boardId: doc._id,
+  });
+  Cards.remove({
+    boardId: doc._id,
+  });
+  Lists.remove({
+    boardId: doc._id,
+  });
+  Swimlanes.remove({
+    boardId: doc._id,
+  });
+  Activities.remove({
+    boardId: doc._id,
+  });
+}
+
 if (Meteor.isServer) {
   Boards.allow({
     insert: Meteor.userId,
@@ -998,6 +1016,12 @@ if (Meteor.isServer) {
         });
       });
     }
+  });
+
+  // Remove all activities associated with the board if we remove the board
+  // Remove also cards / lists / swimlanes
+  Boards.before.remove((userId, doc) => {
+    boardRemover(userId, doc);
   });
 }
 

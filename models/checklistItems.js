@@ -101,6 +101,9 @@ function itemCreation(userId, doc) {
 function itemRemover(userId, doc) {
   const card = Cards.findOne(doc.cardId);
   const boardId = card.boardId;
+  Activities.remove({
+    checklistItemId: doc._id,
+  });
   Activities.insert({
     userId,
     activityType: 'removedChecklistItem',
@@ -109,9 +112,6 @@ function itemRemover(userId, doc) {
     checklistId: doc.checklistId,
     checklistItemId: doc._id,
     checklistItemName:doc.title,
-  });
-  Activities.remove({
-    checklistItemId: doc._id,
   });
 }
 
@@ -199,7 +199,6 @@ if (Meteor.isServer) {
   ChecklistItems.before.update((userId, doc, fieldNames) => {
     publishChekListUncompleted(userId, doc, fieldNames);
   });
-
 
   ChecklistItems.after.insert((userId, doc) => {
     itemCreation(userId, doc);
