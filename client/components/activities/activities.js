@@ -51,9 +51,7 @@ BlazeComponent.extendComponent({
   },
 
   checkItem(){
-    const checkItemId = this.currentData().checklistItemId;
-    const checkItem = ChecklistItems.findOne({_id:checkItemId});
-    return checkItem.title;
+    return this.currentData().checklistItemName;
   },
 
   boardLabel() {
